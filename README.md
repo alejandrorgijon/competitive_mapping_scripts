@@ -16,7 +16,7 @@ Our pipeline was divided into 9 different steps, with their corresponding script
 
 Rodríguez-Gijón A, Milke F, Dharamshi J, Pacheco-Valenciana A, Hampel JJ, Damashek J, Wienhausen G, Rodriguez-R. LM, Garcia SL. 2024. The effect of genome size on ecological success is mediated by genomic features and biotic factors in aquatic prokaryotes. Manuscript.
 
-# Other relevant reference
+# Other relevant references
 
 (1) Rodriguez-R LM, Gunturu S, Harvey WT, et al. 2018. The Microbial Genomes Atlas (MiGA) webserver: taxonomic and gene diversity analysis of Archaea and Bacteria at the whole genome level. Nucleic Acids Research 2;46(W1):W282–8. 
 
