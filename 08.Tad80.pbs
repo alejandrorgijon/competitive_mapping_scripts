@@ -1,0 +1,34 @@
+# Memory requirement used: --mem=20g
+# Other computing details: -N 1 -n 1 --array=1-44
+
+module load conda
+module load bioinfo-tools
+module load BEDTools/2.29.2
+source conda_init.sh
+conda activate miga
+eval "$(miga env)"
+
+cd ~/path/to/folder/where/tad80/result/files/should/be/created
+
+k=0
+for i in $(cat "../path/to/folder/with/metagenomes/to/be/mapped/File_with_metagenome_accession_numbers.txt") ; do
+  # Does it exist?
+  dir="../03_metagenomes/data/02.trimmed_reads"
+  [[ -e "$dir/${i}.json" ]] || continue
+  echo "===$dir"
+
+  # Is this the job we want to run?
+  let k=$k+1
+  [[ $k == $SLURM_ARRAY_TASK_ID ]] || continue
+
+  # Run BedTools
+  bedtools genomecov -ibam "../04_mapping/${i}.sorted.bam" -bga > "${i}.bg"
+
+  # Calculate TAD80 for each genome
+  for j in $(cat "../path/to/folder/with/File_with_genome_names.txt") ; do
+    NEW_NAME=$(echo "$j" | tr '-' '_')
+    echo -ne "$NEW_NAME\t"
+    grep "^$NEW_NAME-" "${i}.bg" \
+      | BedGraph.tad.rb -i /dev/stdin -r 0.8 --length --breadth
+  done > "${i}.tsv"
+done

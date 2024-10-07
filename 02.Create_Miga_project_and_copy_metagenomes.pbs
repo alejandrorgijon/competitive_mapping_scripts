@@ -1,0 +1,40 @@
+# Memory requirement used: --mem=100g
+# Other computing details: -N 1 -n 1
+
+module load conda
+source conda_init.sh
+conda activate miga
+eval "$(miga env)"
+
+cd ~/path/to/folder/where/you/want/to/create/your/miga/project/and/copy/metagenomes
+
+# Create MiGA Project
+[[ -d data ]] || miga new -P . --type metagenomes --name GenomospaceFW
+
+for i in $(cat  ~path/to/File_with_metagenomes_to_be_copied.txt) ; do
+  # Does it exist?
+  dir="$i"
+  [[ -d "$dir" ]] || continue
+
+  # Find the files
+  echo "===[ $i ]" >&2
+  files=( $(ls "$dir"/*/*.fastq.gz) )
+  INPUT=""
+  if [[ ${#files[@]} == 1 ]] ; then
+    TYPE="raw_reads_single"
+    INPUT="${files[0]}"
+  else
+    TYPE="raw_reads_paired"
+    INPUT="$(ls "$dir"/*/*_[12].fastq.gz)"
+  fi
+
+  # Add the reads
+  miga add -P . -D "$i" -t metagenome -i "$TYPE" --ignore-dups $INPUT
+done
+
+
+
+
+
+
+

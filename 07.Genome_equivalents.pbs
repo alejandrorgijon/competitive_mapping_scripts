@@ -1,0 +1,33 @@
+# Memory requirement used: --mem=150g
+# Other computing details: -N 1 -n 10 --array=1-200%40
+
+THR=10
+. ~/.bashrc
+load_miga
+cd ~path/to/folder/where/genome/equivalent/result/files/should/be/created
+
+k=0
+for i in $(cat "../path/to/folder/with/metagenomes/to/be/mapped/File_with_accession_numbers.txt") ; do
+  # Is this the job we want to run?
+  let k=$k+1
+  [[ $k == $SLURM_ARRAY_TASK_ID ]] || continue
+  echo "===[ $i ]"
+
+  # Does it exist?
+  dir="../03_metagenomes/data/02.trimmed_reads"
+  [[ -e "$dir/${i}.json" ]] || continue
+  echo "===$dir"
+
+  # Find the files
+  files=( $(ls "$dir/$i".[12].clipped.fastq.gz) )
+  INPUT=""
+  if [[ ${#files[@]} == 1 ]] ; then
+    INPUT="${files[0]}"
+  else
+    INPUT="${files[0]},${files[1]}"
+  fi
+
+  # Run MicrobeCensus
+  run_microbe_census.py "$INPUT" "${i}.mcs" -t $THR
+done
+

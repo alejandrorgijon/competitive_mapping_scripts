@@ -1,0 +1,26 @@
+# Memory requirement used: --mem=20g
+# Other computing details: -N 1 -n 1 
+
+module load conda
+source conda_init.sh
+conda activate miga
+eval "$(miga env)"
+
+cd ~/path/to/folder/where/result/files/should/be/created
+
+
+for i in $(cat "../path/to/folder/with/metagenomes/to/be/mapped/File_with_metagenome_accession_numbers.txt") ; do
+  [[ -e "../05_genomeequiv/${i}.mcs" ]] || continue
+  [[ -e "../06_tad80/${i}.tsv" ]] || continue
+
+  # Get Genome Equivalents
+  GE=$(grep 'genome_equivalents:' "05_genomeequiv/${i}.mcs" | awk '{print $2}')
+
+  # Get Name and Relative Abundance
+  cat "06_tad80/${i}.tsv" \
+    | awk '{ AB=$2/'$GE' ; print $1 "\t" AB }' \
+    > "07_report/${i}.tsv"
+done
+
+Table.merge.pl 07_report/*.tsv > 07_report.tsv
+

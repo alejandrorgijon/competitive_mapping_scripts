@@ -1,0 +1,10 @@
+# Memory requirement used: -C mem256GB
+# Other computing details: memory requirement can be as high as 1Tb for large metagenomes.
+
+module load conda
+source conda_init.sh
+conda activate miga
+eval "$(miga env)"
+cd ~/path/to/folder/where/you/have/your/miga/project
+
+miga stats -P . --try-load -r trimmed_fasta --compute-and-save -D metagenome_accession_num > metagenome_accession_num.txt

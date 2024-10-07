@@ -1,0 +1,39 @@
+# Memory requirement used:  -C mem1TB
+# Other computing details: -N 1 -p node
+
+
+THR=4
+module load conda
+module load bioinfo-tools
+module load samtools/1.17
+source conda_init.sh
+conda activate strobealign
+
+cd ~path/to/folder/where/mapping/result/files/should/be/created
+
+for i in $(cat "../path/to/folder/with/metagenomes/to/be/mapped/File_with_accession_numbers.txt") ; do
+  [[ -s "${i}.sorted.bam" ]] && continue
+  echo "===[ $i ]"
+
+  # Does it exist?
+  dir="../03_metagenomes/data/02.trimmed_reads"
+  [[ -e "$dir/${i}.json" ]] || continue
+  echo "===> $dir"
+
+  # Find the files
+  files=( $(ls "$dir/$i".[12].clipped.fastq.gz) )
+  INPUT=""
+  if [[ ${#files[@]} == 1 ]] ; then
+    INPUT="${files[0]}"
+  else
+    INPUT="${files[0]} ${files[1]}"
+  fi
+
+  # Run the mapping, SAM -> BAM, and sort BAM
+  strobealign \
+	 --use-index file_with_all_fna_files_are_concatenated.fna $INPUT \
+	 --threads=$THR -U \
+    | samtools view -@ $THR -Sb - \
+    | samtools sort -@ $THR -o "${i}.sorted.bam" -
+done
+

@@ -1,0 +1,36 @@
+# Memory requirement used: --mem=100g
+# Other computing details: -N 1 -n 4 --array=1-40
+
+module load conda
+source conda_init.sh
+conda activate miga
+eval "$(miga env)"
+cd ~/path/to/folder/where/you/have/your/miga/project
+THR=4
+
+k=0
+for i in $(cat File_with_metagenomes_to_be_trimmed.txt) ; do
+  # Is this the job we want to run?
+  let k=$k+1
+  [[ $k == $SLURM_ARRAY_TASK_ID ]] || continue
+  echo "===[ $i ]"
+
+  # Does it exist?
+  md="metadata/${i}.json"
+  [[ -s "$md" ]] || continue
+
+  # Run the trimming
+  miga run -P . -D "$i" -t $THR -r --check-first -r trimmed_reads
+  miga run -P . -D "$i" -t $THR -r --check-first -r read_quality
+  miga run -P . -D "$i" -t $THR -r --check-first -r trimmed_fasta
+
+  # End the loop
+  break
+done
+
+
+
+
+
+
+

@@ -1,0 +1,16 @@
+# Memory requirement used: -C mem1TB
+# Other computing details: -N 1 -p node
+
+module load conda
+source conda_init.sh
+conda activate strobealign
+
+cd ~path/to/folder/where/mapping/result/files/should/be/created
+
+strobealign --create-index file_with_all_fna_files_are_concatenated.fna -r 50
+strobealign --create-index file_with_all_fna_files_are_concatenated.fna -r 100 
+strobealign --create-index file_with_all_fna_files_are_concatenated.fna -r 125
+strobealign --create-index file_with_all_fna_files_are_concatenated.fna -r 150
+strobealign --create-index file_with_all_fna_files_are_concatenated.fna -r 250
+strobealign --create-index file_with_all_fna_files_are_concatenated.fna -r 300
+strobealign --create-index file_with_all_fna_files_are_concatenated.fna -r 400
