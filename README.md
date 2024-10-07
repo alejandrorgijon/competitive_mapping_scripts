@@ -1,7 +1,7 @@
 # Competitive mapping
 In short, the raw metagenomic reads of all metagenomes were trimmed using the Microbial Genomes Atlas v1.3.8.2 (MiGA) (1), and the competitive mapping was performed using Strobealign v0.11.0 (2).
 
-Our pipeline was divided into 9 different steps:
+Our pipeline was divided into 9 different steps, with their corresponding scripts:
 - 01.Download_metagenomes.pbs: script used to download the FastQ files of the analyzed metagenomes. It leverages the script “SRA.download.bash” from the Enveomics collection (3).
 - 02.Create_Miga_project_and_copy_metagenomes.pbs: script used to create a MiGA environment (“miga new”), in which the fastQ files were copied to (“miga add”).
 - 03.Trimming_metagenomes.pbs: script used to trim all raw fastQ files (“miga run -r trimmed_reads”).
