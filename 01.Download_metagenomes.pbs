@@ -1,0 +1,22 @@
+# Memory requirement used: --mem=100g
+# Other computing details: -N 1 -n 1
+
+module load conda
+source conda_init.sh
+conda activate miga
+eval "$(miga env)"
+cd ~/path/to/folder/with/file/including/metagenome/accession/numbers
+
+FROM=1
+N=45
+
+for i in $(tail -n "+$FROM" "File_with_metagenome_accession_numbers.txt | head -n "$N") ; do
+  SRA.download.bash "$i"
+done
+
+
+
+
+
+
+
