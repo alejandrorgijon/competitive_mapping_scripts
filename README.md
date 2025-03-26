@@ -14,7 +14,7 @@ Our pipeline was divided into 9 different steps, with their corresponding script
 
 # Reference of paper
 
-Rodríguez-Gijón A, Milke F, Dharamshi J, Pacheco-Valenciana A, Hampel JJ, Damashek J, Wienhausen G, Rodriguez-R. LM, Garcia SL. 2024. The effect of genome size on ecological success is mediated by genomic features and biotic factors in aquatic prokaryotes. Manuscript.
+Rodríguez-Gijón A, Pacheco-Valenciana A, Milke F, Dharamshi JE, Hampel JJ, Damashek J, Wienhausen G, Rodriguez-R LM, Garcia SL. 2025. The ecological success of freshwater microorganisms is mediated by streamlining and biotic interactions. bioRxiv. DOI: [10.1101/2025.03.24.644981](https://doi.org/10.1101/2025.03.24.644981).
 
 # Other relevant references
 
